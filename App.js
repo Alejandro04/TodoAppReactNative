@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
 import Header from './components/header'
 import TodoItem from './components/todoItem'
 import AddTodo from './components/addTodo'
@@ -20,24 +20,35 @@ export default function App() {
   }
 
   const submitHandler = (text) => {
-    setTodos((prevTodos) => {
-      return [
-        { text: text, key: Math.random() },
-        ...prevTodos
-      ]
-    })
+
+    if (text.length > 3) {
+      setTodos((prevTodos) => {
+        return [
+          { text: text, key: Math.random() },
+          ...prevTodos
+        ]
+      })
+    } else {
+      Alert.alert('Ooops', 'El texto debe tener 3 carácteres como mímino',
+        [
+          {
+            text: 'Undestood', onPress: () => console.log('alert close')
+          }
+        ]
+      )
+    }
   }
 
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        <AddTodo submitHandler={submitHandler}/>
+        <AddTodo submitHandler={submitHandler} />
         <View style={styles.list}>
           <FlatList
             data={todos}
             renderItem={({ item }) => (
-              <TodoItem item={item} pressHandler={pressHandler}/>
+              <TodoItem item={item} pressHandler={pressHandler} />
             )}
           />
         </View>
